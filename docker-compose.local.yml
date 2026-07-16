@@ -1,0 +1,35 @@
+volumes:
+  strategic_exit_local_postgres_data: {}
+  strategic_exit_local_postgres_data_backups: {}
+  staticfiles: {}
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: strategic_exit_local_django
+    container_name: strategic_exit_local_django
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app:z
+      - staticfiles:/app/staticfiles:z
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - "8081:8000"
+    command: /start
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: strategic_exit_production_postgres
+    container_name: strategic_exit_local_postgres
+    volumes:
+      - strategic_exit_local_postgres_data:/var/lib/postgresql/data
+      - strategic_exit_local_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.local/.postgres
