@@ -275,3 +275,7 @@ strategic_exit/media/
 .env
 .envs/*
 !.envs/.local/
+
+# Ignore documentation for GitHub Pages
+IMPLEMENTATION_GUIDE.md
+EMAIL_SETUP.md
